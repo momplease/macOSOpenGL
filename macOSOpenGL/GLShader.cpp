@@ -88,6 +88,10 @@ GLuint GLShader::getId() const {
     return shaderId;
 }
 
+bool GLShader::isBuild() const {
+    return shaderId != NAN;
+}
+
 void GLShader::buildShader(GLShaderLoader *loader) {
     this->shaderId = GLContext::mainContext()->createShader(getType());
 }

@@ -27,8 +27,12 @@ public:
     GLShaderProgram& operator=(const GLShaderProgram&) = delete;
     GLShaderProgram(GLShaderProgram&&) = delete;
     GLShaderProgram& operator=(GLShaderProgram&&) = delete;
-    
+public:
     virtual void prepareOpenGL() override;
+    virtual void clearOpenGL() override {}
+    
+    virtual void bind(GLShaderProgram *) override {}
+    virtual void unbind(GLShaderProgram *) override {}
     
     void addFragmentShader(GLFragmentShader *);
     void addVertexShader(GLVertexShader *);

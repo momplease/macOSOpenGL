@@ -9,8 +9,6 @@
 #include "Transform.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
-using namespace macOSOpenGL;
-
 Transform::Transform(glm::vec3 position, glm::quat rotation, glm::vec3 scale) {
     this->position = position;
     this->rotation = rotation;

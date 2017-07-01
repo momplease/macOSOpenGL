@@ -8,15 +8,14 @@
 
 #include "GL3DSceneObject.hpp"
 #include "GLScene.hpp"
-#include "GL3DRenderMesh.hpp"
+#include "GLMesh.hpp"
+#include "Transform.hpp"
 
-using namespace macOSOpenGL;
-
-GL3DSceneObject::GL3DSceneObject(Mesh *mesh, Transform *transform, const GLScene *scene) : GL3DObject(transform), scene(scene) {
+GL3DSceneObject::GL3DSceneObject(GLMesh *mesh, Transform *transform, const GLScene *scene) : GL3DObject(transform), scene(scene) {
     addMesh(mesh);
 }
 
-GL3DSceneObject::GL3DSceneObject(const std::vector<Mesh*>& meshes, Transform *transform, const GLScene *scene) : GL3DObject(transform), scene(scene) {
+GL3DSceneObject::GL3DSceneObject(const std::vector<GLMesh*>& meshes, Transform *transform, const GLScene *scene) : GL3DObject(transform), scene(scene) {
     for (auto&& mesh: meshes) {
         addMesh(mesh);
     }
@@ -26,7 +25,7 @@ void GL3DSceneObject::prepareOpenGL() {
     auto rawPointersToMeshes = getMeshes();
     std::for_each(rawPointersToMeshes.begin(),
                   rawPointersToMeshes.end(),
-                  [this](Mesh *mesh){
+                  [this](GLMesh *mesh){
                       mesh->prepareOpenGL();
                   });
 }
@@ -35,7 +34,7 @@ void GL3DSceneObject::updateAnimations(double deltaTime) {
     auto rawPointersToMeshes = getMeshes();
     std::for_each(rawPointersToMeshes.begin(),
                   rawPointersToMeshes.end(),
-                  [this, deltaTime](Mesh *mesh){
+                  [this, deltaTime](GLMesh *mesh){
                       mesh->updateAnimations(deltaTime);
                   });
 }
@@ -45,24 +44,24 @@ const GLScene* GL3DSceneObject::getScene() {
 }
 
 
-void GL3DSceneObject::addMesh(Mesh *mesh) {
-    meshes.push_back(std::unique_ptr<Mesh>(mesh));
+void GL3DSceneObject::addMesh(GLMesh *mesh) {
+    meshes.push_back(std::unique_ptr<GLMesh>(mesh));
 }
 
-Mesh* GL3DSceneObject::getMeshAt(int index) {
+GLMesh* GL3DSceneObject::getMeshAt(int index) {
     return meshes.at(index).get();
 }
 
 // RVO
-std::vector<Mesh*> GL3DSceneObject::getMeshes() {
-    std::vector<Mesh*> rawPointersCollection;
-    auto copyPointersInto = [this](std::vector<Mesh*>& collection) {
+std::vector<GLMesh*> GL3DSceneObject::getMeshes() {
+    std::vector<GLMesh*> rawPointersCollection;
+    auto copyPointersInto = [this](std::vector<GLMesh*>& collection) {
         for(auto& mesh: meshes) {
             collection.push_back(mesh.get());
         }
     };
     copyPointersInto(rawPointersCollection);
-    return rawPointersCollection; // RVO, no need in std::move()
+    return rawPointersCollection; // RVO
 }
 
 int GL3DSceneObject::getMeshesCount() const {

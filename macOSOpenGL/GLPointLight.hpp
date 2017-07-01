@@ -13,7 +13,7 @@
 
 class GLPointLight : public GLLight {
 public:
-    GLPointLight(macOSOpenGL::Transform*);
+    GLPointLight(Transform*);
     virtual ~GLPointLight();
     
     GLPointLight(const GLPointLight&) = delete;
@@ -22,6 +22,9 @@ public:
     GLPointLight& operator=(GLPointLight&&) = delete;
     
     virtual void prepareOpenGL() override;
+    virtual void clearOpenGL() override {}
+    virtual void bind(GLShaderProgram *) override {}
+    virtual void unbind(GLShaderProgram *) override {}
     
 private:
     

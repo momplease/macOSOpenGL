@@ -9,7 +9,7 @@
 #include "GLPointLight.hpp"
 #include "Transform.hpp"
 
-GLPointLight::GLPointLight(macOSOpenGL::Transform *transform) : GLLight(transform) {
+GLPointLight::GLPointLight(Transform *transform) : GLLight(transform) {
 }
 
 GLPointLight::~GLPointLight() {

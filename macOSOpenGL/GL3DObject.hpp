@@ -13,13 +13,11 @@
 #include "GLObject.hpp"
 #include "glm/fwd.hpp"
 
-namespace macOSOpenGL {
 class Transform;
-}
 
 class GL3DObject : public GLObject {
 public:
-    GL3DObject(macOSOpenGL::Transform*);
+    GL3DObject(Transform*);
     virtual ~GL3DObject();
     
     GL3DObject(const GL3DObject&) = delete;
@@ -27,11 +25,11 @@ public:
     GL3DObject(GL3DObject&&) = delete;
     GL3DObject& operator=(GL3DObject&&) = delete;
     
-    virtual macOSOpenGL::Transform* getTransform() const;
-    virtual void setTransform(macOSOpenGL::Transform*);
+    virtual Transform* getTransform() const;
+    virtual void setTransform(Transform*);
     
 protected:
-    std::unique_ptr<macOSOpenGL::Transform> transform;
+    std::unique_ptr<Transform> transform;
     
 };
 

@@ -29,8 +29,7 @@ Mesh::Mesh(const std::vector<glm::vec3>& vertices,
            const std::vector<unsigned int>& indices) : Mesh(vertices,
                                                             uvs,
                                                             normals,
-                                                            indices,
-                                                            Transform::defaultTransform3D()) {
+                                                            indices) {
 }
 
 const void Mesh::addTangents(const std::vector<glm::vec3>& tangents) {

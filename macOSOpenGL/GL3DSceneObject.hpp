@@ -15,12 +15,12 @@
 #include "ISceneBehaviour.hpp"
 
 class GLScene;
-class Mesh;
+class GLMesh;
 
-class GL3DSceneObject final: public GL3DObject, public ISceneBehaviour {
+class GL3DSceneObject : public GL3DObject, public ISceneBehaviour {
 public:
-    GL3DSceneObject(Mesh*, macOSOpenGL::Transform*, const GLScene *);
-    GL3DSceneObject(const std::vector<Mesh*>&, macOSOpenGL::Transform*, const GLScene *);
+    GL3DSceneObject(GLMesh *, Transform *, const GLScene *);
+    GL3DSceneObject(const std::vector<GLMesh*>&, Transform *, const GLScene *);
     
     virtual ~GL3DSceneObject();
     
@@ -31,9 +31,9 @@ public:
     
     virtual const GLScene* getScene();
     
-    void addMesh(Mesh*);
-    Mesh* getMeshAt(int);
-    std::vector<Mesh*> getMeshes();
+    void addMesh(GLMesh*);
+    GLMesh* getMeshAt(int);
+    std::vector<GLMesh*> getMeshes();
     int getMeshesCount() const;
     
     // ISceneBehaviour
@@ -43,7 +43,7 @@ public:
 protected:
     const GLScene *scene;
     
-    std::vector<std::unique_ptr<Mesh>> meshes;
+    std::vector<std::unique_ptr<GLMesh>> meshes;
     
     //GLDrawableComponent* drawable;
     //GLVertexedComponent* vertexed;

@@ -9,7 +9,7 @@
 #include "GLLight.hpp"
 #include "Transform.hpp"
 
-GLLight::GLLight(macOSOpenGL::Transform *transform) : GL3DObject(transform), lightPower(50.0f) {
+GLLight::GLLight(Transform *transform) : GL3DObject(transform), lightPower(50.0f) {
 }
 
 GLLight::~GLLight() {

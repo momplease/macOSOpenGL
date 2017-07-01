@@ -7,18 +7,19 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "OpenGLTextureLoader.hpp"
 
 #include "GLScene.hpp"
 #include "FbxLoader.hpp"
 #include "GL3DSceneObject.hpp"
-#include "OpenGLShaderLoader.hpp"
-#include "OpenGLTextureLoader.hpp"
-#include "Polygon.hpp"
 #include "Transform.hpp"
-#include "GL3DRenderMesh.hpp"
 #include "GLPointLight.hpp"
 
-using namespace macOSOpenGL;
+// Concept
+#include "GLMeshGenerator.hpp"
+#include "GLMaterial.hpp"
+#include "GLTexture.hpp"
+
 
 GLScene::GLScene() {
     GLCamera *newCamera = new GLCamera();
@@ -40,12 +41,11 @@ void GLScene::prepareOpenGL() {
         fbxLoader.reset(new FbxLoader());
     fbxLoader->loadWithFilename([[mainBundle pathForResource:@"ttcogl/cat" ofType:@"FBX"] UTF8String]);
     
-    textureLoader = [[OpenGLTextureLoader alloc] init];
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     { // Create cat
         
         // Configure object
-        RenderableConfig furConfig;
+        /*RenderableConfig furConfig;
         
         // Vertices config
         furConfig.vertexedPart.verticesType = GL_FLOAT;
@@ -75,18 +75,18 @@ void GLScene::prepareOpenGL() {
                                                     glm::vec3(1.0f));
         
         Mesh *furMesh = new GL3DRenderMesh(fbxLoader->secondMesh(),
-                                           fbxLoader->UVs().at(fbxLoader->UVKeys().at(1)),
+                                           fbxLoader->getUVs().at(fbxLoader->getUVKeys().at(1)),
                                            fbxLoader->secondNormals(),
                                            std::vector<unsigned int>(),
                                            furMeshTransform,
                                            furConfig);
         
         furMesh->addTangents(fbxLoader->secondTangents());
-        furMesh->addBitangents(fbxLoader->secondBitangents());
+        furMesh->addBitangents(fbxLoader->secondBitangents());*/
         
         
         
-        RenderableConfig bodyConfig;
+        /*RenderableConfig bodyConfig;
         // Vertices config
         bodyConfig.vertexedPart.verticesType = GL_FLOAT;
         bodyConfig.vertexedPart.dataOffset = 3;
@@ -109,18 +109,41 @@ void GLScene::prepareOpenGL() {
         bodyConfig.drawablePart.offset = 0;
         bodyConfig.drawablePart.indicesType = GL_UNSIGNED_INT; //???
         bodyConfig.drawablePart.useIndices = false;
-        bodyConfig.drawablePart.useDepthBuffer = true;
+        bodyConfig.drawablePart.useDepthBuffer = true;*/
         
         
         
-        Transform* bodyMeshTransform = new Transform(GLScene::getCenter(),
+        /*Transform* bodyMeshTransform = new Transform(GLScene::getCenter(),
                                                      //glm::quat(0.0f, 0.0f, 0.0f, 1.0f),
                                                      glm::rotate(glm::quat(0.0f, 0.0f, 0.0f, 1.0f), glm::radians(-90.f), glm::vec3(1.0f, 0.0f, 0.0f)),
-                                                     glm::vec3(1.0f));
+                                                     glm::vec3(1.0f));*/
+
         
-        Mesh *bodyMesh = new GL3DRenderMesh(fbxLoader->indexedVertices(),
-                                            fbxLoader->UVs().at(fbxLoader->UVKeys().at(0)),
-                                            fbxLoader->normals(),
+        
+        
+        
+        GLMeshGenerator *generator = new GLMeshGenerator(fbxLoader.get());
+        
+        std::vector<GLMesh *> generatedMeshes = generator->getMeshes();
+        
+        loadSceneObjectsWith(std::move(generatedMeshes));
+        
+        
+        /*std::for_each(generator->getMeshes().begin(),
+                      generator->getMeshes().end(),
+                      [this](Mesh *mesh){
+                          objects.push_back(std::make_shared<GL3DSceneObject>(new GL3DSceneObject(mesh,
+                                                                                                  Transform::defaultTransform())));
+                      });
+        
+        
+        
+        
+        
+        
+        Mesh *bodyMesh = new GL3DRenderMesh(fbxLoader->getExtractedVertices().at(fbxLoader->getKeys().at(0)),
+                                            fbxLoader->getUVs().at(fbxLoader->getUVKeys().at(0)),
+                                            fbxLoader->getNormals(),
                                             std::vector<unsigned int>(),
                                             bodyMeshTransform,
                                             bodyConfig);
@@ -134,7 +157,7 @@ void GLScene::prepareOpenGL() {
                                                                  this));
         //cat->addMesh(furMesh);
         
-        addSceneObject(std::move(cat)); // Move into collection
+        addSceneObject(std::move(cat)); // Move into collection*/
         
         /*std::vector<glm::vec3> verts;
         verts.push_back(glm::vec3(-10.0,  10.0, 0.0));
@@ -196,6 +219,11 @@ void GLScene::prepareOpenGL() {
     
     addLight(std::move(light));
     
+    
+    for(int i = 0; i < objects.size(); ++i) {
+        objects[i]->prepareOpenGL();
+    }
+    
 }
 
 void GLScene::updateAnimations(double deltaTime) {
@@ -235,6 +263,10 @@ void GLScene::addSceneObject(std::shared_ptr<GL3DSceneObject> object) {
 
 void GLScene::addLight(std::shared_ptr<GLLight> light) {
     lights.push_back(light);
+}
+
+void GLScene::loadSceneObjectsWith(std::vector<GLMesh *> meshes) {
+    
 }
 
 /*const vector<IRenderable const *> GLScene::renderingObjects() const {

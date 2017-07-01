@@ -60,6 +60,8 @@ protected:
     std::vector<unsigned int> indices;
     std::vector<glm::vec3> tangents;
     std::vector<glm::vec3> bitangents;
+    
+    // Material
 };
 
 #endif /* Mesh_hpp */

@@ -23,7 +23,7 @@
 #include "GLVertexShader.hpp"
 #include "GLFragmentShader.hpp"
 
-#include "Mesh.hpp"
+#include "GLMesh.hpp"
 #include "Transform.hpp"
 
 #define thisDelegate ((__bridge  OpenGLViewController *)delegate)
@@ -84,9 +84,7 @@ void GLRenderingEngine::prepareOpenGL() {
     this->scene->prepareOpenGL();
     this->prepareShaders();
 
-    for(auto& object: scene->getObjects()) {
-        object->prepareOpenGL();
-    }
+    
     
 }
 
@@ -97,8 +95,8 @@ void GLRenderingEngine::render(double deltaTime) {
     [[thisDelegate openGLContext] makeCurrentContext];
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //glUseProgram(shaderProgramId);
-    
+
+    // Deprecated
     shaderProgram->use();
     
     
@@ -123,24 +121,24 @@ void GLRenderingEngine::renderObject(GL3DSceneObject *objectToRender) {
     auto meshesToRender = objectToRender->getMeshes();
     std::for_each(meshesToRender.begin(),
                   meshesToRender.end(),
-                  [this, objectToRender](Mesh* mesh){
+                  [this, objectToRender](GLMesh* mesh){
                       this->render(mesh, objectToRender->getTransform()->asMatrix());
                   });
 }
 
-void GLRenderingEngine::render(IGLRenderable* renderable, glm::mat4 parentsModel) {
+void GLRenderingEngine::render(GLMesh *mesh, glm::mat4 parentsModel) {
     // Bind
-    renderable->bind(shaderProgram.get());
+    mesh->bind(shaderProgram.get());
     
     // ??? Material::prepare(OpenGL)
     
-    glm::mat4 MVP = scene->getCamera()->viewProjection() * renderable->getModel() * parentsModel;
+    glm::mat4 MVP = scene->getCamera()->viewProjection() * mesh->getTransform()->asMatrix() * parentsModel;
     shaderProgram->getVertexShader()->setUniformValueByName("uniMVP", &MVP);
     
     glm::mat4 viewMatrix = scene->getCamera()->view();
     shaderProgram->getVertexShader()->setUniformValueByName("uniViewMatrix", &viewMatrix);
     
-    glm::mat4 modelMatrix = renderable->getModel() * parentsModel;
+    glm::mat4 modelMatrix = mesh->getTransform()->asMatrix() * parentsModel;
     shaderProgram->getVertexShader()->setUniformValueByName("uniModelMatrix", &modelMatrix);
     
     // Getting first light
@@ -155,30 +153,30 @@ void GLRenderingEngine::render(IGLRenderable* renderable, glm::mat4 parentsModel
     );
     shaderProgram->getVertexShader()->setUniformValueByName("uniModelView3x3", &modelView3x3);
     
-    draw(renderable->getDrawable());
+    draw(mesh);
     
     //renderable->unbind();
     
 }
 
 
-void GLRenderingEngine::draw(IGLDrawable* drawable) {
-    if (drawable->isUsingDepthBuffer())
+void GLRenderingEngine::draw(GLMesh *mesh) {
+    /*if (mesh->isUsingDepthBuffer())
         glEnable(GL_DEPTH_TEST);
     else
         glDisable(GL_DEPTH_TEST);
     
-    if (drawable->isUsingIndices()) {
-        GLContext::mainContext()->bindBuffer(GL_ELEMENT_ARRAY_BUFFER, drawable->getIndicesBufferObject());
-        GLContext::mainContext()->drawElements(drawable->getPrimitiveType(),
-                                               drawable->getIndicesCount(),
-                                               drawable->getIndicesType(),
+    if (mesh->isUsingIndices()) {
+        GLContext::mainContext()->bindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->getIndicesBufferObject());
+        GLContext::mainContext()->drawElements(mesh->getGrid()->getTopology(),
+                                               mesh->getGrid()->getIndicesCount(),
+                                               mesh->getGrid()->getIndicesType(),
                                                (void*)0);
     } else {
-        GLContext::mainContext()->drawArrays(drawable->getPrimitiveType(),
-                                             drawable->getOffset(),
-                                             drawable->getVerticesCount());
-    }
+        GLContext::mainContext()->drawArrays(mesh->getGrid()->getTopology(),
+                                             mesh->getGrid()->getOffset(),
+                                             mesh->getGrid()->getVerticesCount());
+    }*/
 }
 
 

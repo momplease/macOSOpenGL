@@ -27,6 +27,12 @@ public:
     GLShader& operator=(const GLShader&) = delete;
     GLShader(GLShader&&) = delete;
     GLShader& operator=(GLShader&&) = delete;
+public:
+    virtual void prepareOpenGL() override;
+    virtual void clearOpenGL() override {}
+    
+    virtual void bind(GLShaderProgram *) override {}
+    virtual void unbind(GLShaderProgram *) override {}
     
     std::string getPathWhereLocated() const;
     
@@ -37,18 +43,18 @@ public:
     template<typename T>
     void setUniformValueByName(std::string, T *);
     
-    virtual void prepareOpenGL() override;
-    
     virtual void buildShader(GLShaderLoader *);
     GLuint getId() const;
     
     bool hasUniformWithName(std::string name);
     
+    bool isBuild() const;
+    
 protected:
     virtual GLenum getType() const = 0;
     
     std::string path;
-    GLuint shaderId;
+    GLuint shaderId = NAN;
     GLShaderProgram *program;
     
     std::unordered_map<std::string, GLint> uniformIds;

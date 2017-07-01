@@ -30,6 +30,9 @@ void GLShaderProgram::addVertexShader(GLVertexShader *vertex) {
 }
 
 void GLShaderProgram::prepareOpenGL() {
+    if (vertexShader->isBuild() && fragmentShader->isBuild())
+        return;
+    
     vertexShader->buildShader(shaderLoader.get());
     fragmentShader->buildShader(shaderLoader.get());
     

@@ -12,8 +12,6 @@
 #include "glm/vec3.hpp"
 #include "glm/gtx/quaternion.hpp"
 
-namespace macOSOpenGL {
-    
 class Transform final {
 public:
     Transform(glm::vec3 position, glm::quat rotation, glm::vec3 scale);
@@ -30,19 +28,17 @@ public:
     
     glm::mat4 asMatrix();
     
-    static Transform* defaultTransform3D() {
+    static Transform* defaultTransform() {
         return new Transform(glm::vec3(0.0f, 0.0f, 0.0f),
                              glm::quat(0.0f, 0.0f, 0.0f, 0.0f),
                              glm::vec3(1.0f, 1.0f, 1.0f));
     }
 
-    
 private:
     glm::vec3 position;
     glm::quat rotation;
     glm::vec3 scale;
 };
-}
 
 
 #endif /* Transform_hpp */

@@ -10,8 +10,6 @@
 #include "Transform.hpp"
 #include "glm/glm.hpp"
 
-using namespace macOSOpenGL;
-
 GL3DObject::GL3DObject(Transform *transform) : GLObject() {
     this->transform.reset(transform);
 }

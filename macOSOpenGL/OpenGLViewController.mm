@@ -54,7 +54,6 @@
     scene.reset(newScene);
     
     renderingEngine->initialize(scene.get());
-    
     /*try {
         
     } catch (const std::exception& e) {
@@ -155,16 +154,14 @@
     inputHandler->keyUp(event);
 }
 
-- (void)showAlertWithMessageAndTerminate:(NSString *)message {
+- (void)showAlertWithMessage:(NSString *)message completion:(void (^)(NSModalResponse))completion {
     NSAlert *alert = [[NSAlert alloc] init];
     [alert setMessageText:message];
     [alert addButtonWithTitle:@"OK"];
     [alert addButtonWithTitle:@"Cancel"];
     [alert setAlertStyle:NSAlertStyleWarning];
     [alert beginSheetModalForWindow:self.parentWindow
-                  completionHandler:^(NSModalResponse returnCode) {
-                      [NSApp terminate:self];
-                  }];
+                  completionHandler:completion];
 }
 
 @end

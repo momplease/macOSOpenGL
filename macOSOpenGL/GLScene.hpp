@@ -15,27 +15,13 @@
 #include "CameraController.hpp"
 #include "IInputEventHandler.hpp"
 #include "ISceneBehaviour.hpp"
-#include "Polygon.hpp"
 
-@class OpenGLTextureLoader;
 class FbxLoader;
 class IRenderingEngine;
 class GL3DSceneObject;
 class GLLight;
 class GLShaderProgram;
-
-namespace macOSOpenGL {
-    struct SortPolygon {
-        SortPolygon(const Polygon& p, const int& d) : polygon(p), distanceToCamera(d) {}
-        
-        Polygon polygon;
-        int distanceToCamera = INT_MAX;
-    };
-    
-    inline bool operator<(const SortPolygon& p1, const SortPolygon& p2) {
-        return p1.distanceToCamera < p2.distanceToCamera;
-    }
-}
+class GLMesh;
 
 struct GLSceneDelegate {
     virtual CGRect viewRect() const = 0;
@@ -68,6 +54,10 @@ public:
     GLSceneDelegate *delegate;
     
     virtual void prepareOpenGL() override;
+    virtual void clearOpenGL() override {}
+    
+    virtual void bind(GLShaderProgram *) override {}
+    virtual void unbind(GLShaderProgram *) override {}
     
     //void setRenderOrderUsingComparator(std::vector<glm::vec3>&,
     //                                   std::vector<glm::vec2>&,
@@ -79,17 +69,19 @@ public:
     
 private:
     
-    std::unique_ptr<CameraController> cameraController;
-    
     void updateObject(ISceneBehaviour *object, double deltaTime);
+    void loadSceneObjectsWith(std::vector<GLMesh *> meshes);
+    
+    // Camera
+    std::unique_ptr<CameraController> cameraController;
     
     // Handle events in another objects
     std::vector<IInputEventHandler*> handlers;
     std::vector<std::shared_ptr<GLLight>> lights;
     std::vector<std::shared_ptr<GL3DSceneObject>> objects;
 
+    // Loaders
     std::unique_ptr<FbxLoader> fbxLoader;
-    OpenGLTextureLoader *textureLoader;
 };
 
 

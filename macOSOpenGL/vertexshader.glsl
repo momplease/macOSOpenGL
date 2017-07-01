@@ -53,7 +53,7 @@ void main() {
     
     vec3 vertexTangent_cameraSpace = normalize(uniModelView3x3 * vertexTangent_modelSpace);
     vec3 vertexNormal_cameraSpace = normalize(uniModelView3x3 * vertexNormal_modelSpace);
-    vec3 vertexBinormal_cameraSpace = normalize(uniModelView3x3 * vertexBinormal_modelSpace);
+    vec3 vertexBinormal_cameraSpace = normalize(uniModelView3x3 * cross(vertexNormal_modelSpace, vertexTangent_modelSpace));
     
     mat3 TBN = mat3(
         vertexTangent_cameraSpace.x, vertexBinormal_cameraSpace.x, vertexNormal_cameraSpace.x,

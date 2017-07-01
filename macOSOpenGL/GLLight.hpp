@@ -13,7 +13,7 @@
 
 class GLLight : public GL3DObject {
 public:
-    GLLight(macOSOpenGL::Transform*);
+    GLLight(Transform*);
     virtual ~GLLight();
     
     GLLight(const GLLight&) = delete;

@@ -20,6 +20,7 @@ public:
     GLVertexShader& operator=(const GLVertexShader&) = delete;
     GLVertexShader(GLVertexShader&&) = delete;
     GLVertexShader& operator=(GLVertexShader&&) = delete;
+public:
     
     virtual void buildShader(GLShaderLoader *) override;
     

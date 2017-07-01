@@ -16,10 +16,6 @@
 #include "RenderingEngineDelegate.mm"
 
 class GLContext;
-class IGLDrawable;
-class IVertexed;
-class ITextured;
-class IGLRenderable;
 class GLShaderProgram;
 
 class GLRenderingEngine : public IRenderingEngine, public GLSceneDelegate {
@@ -31,7 +27,7 @@ public:
     GLRenderingEngine& operator=(const GLRenderingEngine&) = delete;
     GLRenderingEngine(GLRenderingEngine &&) = delete;
     GLRenderingEngine& operator=(GLRenderingEngine&&) = delete;
-    
+public:
     // IRenderingEngine
     void initialize(GLScene *scene) override;
     void render(double deltaTime) override;
@@ -49,14 +45,13 @@ protected:
     virtual void prepareShaders();
     // Render
     virtual void renderObject(GL3DSceneObject *objectToRender);
-    virtual void render(IGLRenderable* renderable, glm::mat4 parentsModel);
+    virtual void render(GLMesh *mesh, glm::mat4 parentsModel);
     // Native draw call
-    virtual void draw(IGLDrawable *);
+    virtual void draw(GLMesh *mesh);
     
 private:
     GLScene *scene;
     
-    // OpenGL stuff
     std::unique_ptr<GLShaderProgram> shaderProgram;
     GLuint vao;
 };
