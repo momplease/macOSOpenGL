@@ -19,6 +19,7 @@ GLGrid::GLGrid(const std::vector<glm::vec3>& vertices,
                GLGridConfig config) : GLObject(), vertices(vertices), indices(indices), config(config) {
 }
 
+
 GLGrid::~GLGrid() {
 }
 

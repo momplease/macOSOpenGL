@@ -89,7 +89,7 @@ GLuint GLShader::getId() const {
 }
 
 bool GLShader::isBuild() const {
-    return shaderId != NAN;
+    return shaderId == NAN;
 }
 
 void GLShader::buildShader(GLShaderLoader *loader) {

@@ -16,6 +16,7 @@
 
 class GLScene;
 class GLMesh;
+class GLShaderProgram;
 
 class GL3DSceneObject : public GL3DObject, public ISceneBehaviour {
 public:
@@ -39,6 +40,11 @@ public:
     // ISceneBehaviour
     virtual void prepareOpenGL() override;
     virtual void updateAnimations(double deltaTime) override;
+    
+    virtual void clearOpenGL() override {}
+    
+    virtual void bind(GLShaderProgram *) override {}
+    virtual void unbind(GLShaderProgram *) override {}
     
 protected:
     const GLScene *scene;

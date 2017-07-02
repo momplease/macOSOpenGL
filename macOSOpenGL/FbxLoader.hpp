@@ -21,11 +21,6 @@ class FbxMesh;
 class FbxScene;
 }
 
-namespace {
-const int kNumberOfPointsInVertex = 3;
-const int kPolygonSize = 3;
-}
-
 class FbxLoader final {
 public:
     FbxLoader();
@@ -40,8 +35,8 @@ public:
     
     void loadWithFilename(const std::string& filename);
     
-    const std::vector<std::string>& getKeys() const;
-    const std::vector<std::string>& getUVSetNamesForKey(const std::string &key) const;
+    const std::vector<std::string>& getKeys();
+    const std::vector<std::string>& getUVSetNamesForKey(const std::string &key);
     
     // Vertices
     const std::vector<glm::vec3>& getVerticesForKey(const std::string &key);

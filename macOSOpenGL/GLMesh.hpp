@@ -44,11 +44,11 @@ public:
     virtual void updateAnimations(double deltaTime) override {}
     
     
-    virtual void prepareOpenGL() override;
-    virtual void clearOpenGL() override;
+    virtual void prepareOpenGL() override {}
+    virtual void clearOpenGL() override {}
     
-    virtual void bind(GLShaderProgram *) override;
-    virtual void unbind(GLShaderProgram *) override;
+    virtual void bind(GLShaderProgram *) override {}
+    virtual void unbind(GLShaderProgram *) override {}
     
 public:
     

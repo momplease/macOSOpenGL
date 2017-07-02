@@ -79,7 +79,6 @@ std::vector<GLMesh *> GLMeshGenerator::splitMeshesWith(const std::string& key, c
     std::vector<glm::vec3> indexedVertices = this->index(loader->getVerticesForKey(key),
                                                          loader->getIndicesForKey(key));
     
-    const std::vector<glm::vec3>& vertices = loader->getVerticesForKey(key);
     const std::vector<glm::vec3>& normals = loader->getNormalsForKey(key);
     const std::vector<glm::vec3>& tangents = loader->getTangentsForKey(key);
     
@@ -104,22 +103,22 @@ std::vector<GLMesh *> GLMeshGenerator::splitMeshesWith(const std::string& key, c
     for (size_t i = 0; i < UVsets.at(0).size(); ++i) {
         if (!equalvec2(UVsets.at(0)[i], UVsets.at(1)[i])) {
             newUVset1.push_back(UVsets.at(0)[i]);
-            newVertices1.push_back(vertices[i]);
+            newVertices1.push_back(indexedVertices[i]);
             newNormals1.push_back(normals[i]);
             newTangents1.push_back(tangents[i]);
         } else {
             newUVset2.push_back(UVsets.at(1)[i]);
-            newVertices2.push_back(vertices[i]);
+            newVertices2.push_back(indexedVertices[i]);
             newNormals2.push_back(normals[i]);
             newTangents2.push_back(tangents[i]);
         }
     }
     
-    GLGrid *grid1 = new GLGrid(loader->getVerticesForKey(key), std::vector<unsigned int>());
+    GLGrid *grid1 = new GLGrid(newVertices1, std::vector<unsigned int>());
     
-    GLMaterial *material1 = new GLMaterial(loader->getUVsForKeyWithSetName(key, UVSetNames[0]),
-                                           loader->getNormalsForKey(key),
-                                           loader->getTangentsForKey(key));
+    GLMaterial *material1 = new GLMaterial(newUVset1,
+                                           newNormals1,
+                                           newTangents1);
     
     
     Transform *transform1 = new Transform(GLScene::getCenter(),
@@ -130,11 +129,11 @@ std::vector<GLMesh *> GLMeshGenerator::splitMeshesWith(const std::string& key, c
     
     GLMesh *mesh1 = new GLMesh(grid1, material1, transform1);
     
-    GLGrid *grid2 = new GLGrid(loader->getVerticesForKey(key), std::vector<unsigned int>());
+    GLGrid *grid2 = new GLGrid(newVertices2, std::vector<unsigned int>());
     
-    GLMaterial *material2 = new GLMaterial(loader->getUVsForKeyWithSetName(key, UVSetNames[0]),
-                                           loader->getNormalsForKey(key),
-                                           loader->getTangentsForKey(key));
+    GLMaterial *material2 = new GLMaterial(newUVset2,
+                                           newNormals2,
+                                           newTangents2);
     
     
     Transform *transform2 = new Transform(GLScene::getCenter(),
@@ -157,6 +156,17 @@ const std::vector<GLMesh *>& GLMeshGenerator::getMeshes() {
     }
     
     return readyMeshes;
+}
+
+template<typename T>
+std::vector<T> GLMeshGenerator::index(const std::vector<T>& what,
+                                      const std::vector<unsigned int>& indices) {
+    std::vector<T> result;
+    result.reserve(indices.size());
+    for (int i = 0; i < indices.size(); ++i) {
+        result.push_back(what[indices[i]]);
+    }
+    return result;
 }
 
 /*

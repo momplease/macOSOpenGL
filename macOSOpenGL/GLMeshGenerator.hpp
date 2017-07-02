@@ -30,7 +30,7 @@ public:
     
     template<typename T>
     std::vector<T> index(const std::vector<T>& what,
-                         const std::vector<unsigned int>& indexes);
+                         const std::vector<unsigned int>& indices);
     
 private:
     void load();

@@ -19,6 +19,7 @@
 #include "GLMeshGenerator.hpp"
 #include "GLMaterial.hpp"
 #include "GLTexture.hpp"
+#include "GLMesh.hpp"
 
 
 GLScene::GLScene() {
@@ -266,6 +267,16 @@ void GLScene::addLight(std::shared_ptr<GLLight> light) {
 }
 
 void GLScene::loadSceneObjectsWith(std::vector<GLMesh *> meshes) {
+    std::shared_ptr<GL3DSceneObject> sceneObject(new GL3DSceneObject(
+                                                    meshes.at(0),
+                                                    Transform::defaultTransform(),
+                                                    this
+                                                 ));
+    
+    // Temporary
+    delete meshes.at(1);
+    
+    addSceneObject(std::move(sceneObject));
     
 }
 

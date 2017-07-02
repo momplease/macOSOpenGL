@@ -14,6 +14,11 @@
 using namespace std;
 using namespace glm;
 
+namespace {
+const int kNumberOfPointsInVertex = 3;
+const int kPolygonSize = 3;
+}
+
 FbxLoader::FbxLoader() {
 }
 
@@ -57,6 +62,9 @@ void FbxLoader::loadWithFilename(const string& filename) {
         FbxMesh *mesh = childNode->GetMesh();
         
         if (mesh != NULL) {
+            if (not strlen(mesh->GetName()))
+                mesh->SetName(std::to_string(i).c_str());
+            
             keys.push_back(mesh->GetName());
             // Extraction
             startVerticesExtractionOf(mesh);
@@ -70,11 +78,15 @@ void FbxLoader::loadWithFilename(const string& filename) {
 
 #pragma mark - Keys
 
-const std::vector<std::string>& FbxLoader::getKeys() const {
+const std::vector<std::string>& FbxLoader::getKeys() {
     return keys;
 }
 
-const std::vector<std::string>& FbxLoader::getUVSetNamesForKey(const std::string &key) const {
+const std::vector<std::string>& FbxLoader::getUVSetNamesForKey(const std::string &key) {
+    if (UVSetNames.empty()) {
+        forceLoadProcessingUVs();
+    }
+    
     return UVSetNames.at(key);
 }
 
@@ -114,7 +126,7 @@ std::vector<glm::vec3> FbxLoader::extractVerticesOf(fbxsdk_2015_1::FbxMesh *mesh
 
 
 const std::vector<glm::vec3>& FbxLoader::getVerticesForKey(const std::string &key) {
-    if (readyVertices.at(key).empty()) {
+    if (readyVertices.empty()) {
         forceLoadProcessingVertices();
     }
     return readyVertices.at(key);
@@ -155,7 +167,8 @@ std::unordered_map<std::string, std::vector<glm::vec2>> FbxLoader::extractUVsOf(
     std::vector<std::string> UVSetNames;
     
     for(int lUVSetIndex = 0; lUVSetIndex < lUVSetNameList.GetCount(); ++lUVSetIndex) {
-
+        resultUV.clear();
+        
         key = lUVSetNameList.GetStringAt(lUVSetIndex);
         
         UVSetNames.push_back(key);
@@ -228,116 +241,12 @@ std::unordered_map<std::string, std::vector<glm::vec2>> FbxLoader::extractUVsOf(
                 }
             }
         }
-            
+        result.insert({key, std::move(resultUV)});
     }
     this->UVSetNames.insert({mesh->GetName(), std::move(UVSetNames)});
     return result;
     
-    /*std::unordered_map<std::string, std::vector<glm::vec2>> result;
-    
-    FbxStringList lUVSetNameList;
-    mesh->GetUVSetNames(lUVSetNameList);
-    
-    for(int lUVSetIndex = 0; lUVSetIndex < lUVSetNameList.GetCount(); ++lUVSetIndex) {
-
-        std::string key = lUVSetNameList.GetStringAt(lUVSetIndex);
-        std::vector<glm::vec2> UVs;
-        
-        FbxGeometryElementUV* lUVElement = mesh->GetElementUV(lUVSetName);
-        
-        if(!lUVElement)
-            continue;
-        
-        if(lUVElement->GetMappingMode() != FbxGeometryElement::eByPolygonVertex &&
-           lUVElement->GetMappingMode() != FbxGeometryElement::eByControlPoint) {
-            throw std::runtime_error("FBXLoader - UV extracting: unsupported mapping mode");
-        }
-        
-        if (lUVElement->GetMappingMode() == FbxGeometryElement::eByControlPoint) {
-            UVs = extractUVsByControlPoints(mesh, key);
-        } else if (lUVElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex) {
-            UVs = extractUVsByPolygonVertex(mesh, key);
-        }
-        result.insert({std::move(key), std::move(UVs)});
-    }
-    
-    return result;*/
 }
-
-// RVO
-/*std::vector<glm::vec2> FbxLoader::extractUVsByControlPoints(fbxsdk_2015_1::FbxMesh *mesh, const std::string& setName) {
-    FbxGeometryElement *geometryElement = mesh->GetElementUV(lUVSet)
-    
-    if (geometryElement->GetMappingMode() != FbxGeometryElement::eByControlPoint)
-        throw std::runtime_error("extractUVsByControlPoints: wrong mapping mode");
-    
-    FbxGeometryElementUV *lUVElement = mesh->GetElementUV(setName.c_str());
-    
-    std::vector<glm::vec2> resultUVs;
-    
-    const int lPolyCount = mesh->GetPolygonCount();
-    //iterating through the data by polygon
-    for( int lPolyIndex = 0; lPolyIndex < lPolyCount; ++lPolyIndex )
-    {
-        // build the max index array that we need to pass into MakePoly
-        const int lPolySize = mesh->GetPolygonSize(lPolyIndex);
-        for( int lVertIndex = 0; lVertIndex < lPolySize; ++lVertIndex )
-        {
-            FbxVector2 lUVValue;
-                
-            //get the index of the current vertex in control points array
-            int lPolyVertIndex = mesh->GetPolygonVertex(lPolyIndex, lVertIndex);
-                
-            //the UV index depends on the reference mode
-            int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(lPolyVertIndex) : lPolyVertIndex;
-                
-            lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
-                
-            resultUVs.push_back(vec2(static_cast<float>(lUVValue[0]), static_cast<float>(lUVValue[1])));
-            
-        }
-    }
-    
-    return resultUVs;
-}
-
-// RVO
-std::vector<glm::vec2> FbxLoader::extractUVsByPolygonVertex(fbxsdk_2015_1::FbxMesh *mesh, const std::string& setName) {
-    if (geometryElement->GetMappingMode() != FbxGeometryElement::eByPolygonVertex)
-        throw std::runtime_error("extractUVsByPolygonVertex: wrong mapping mode");
-    
-    FbxGeometryElementUV *lUVElement = mesh->GetElementUV(setName.c_str());
-    
-    std::vector<glm::vec2> resultUVs;
-    
-    int lPolyIndexCounter = 0;
-    
-    for( int lPolyIndex = 0; lPolyIndex < mesh->GetPolygonCount(); ++lPolyIndex )
-    {
-        // build the max index array that we need to pass into MakePoly
-        const int lPolySize = mesh->GetPolygonSize(lPolyIndex);
-        
-        for( int lVertIndex = 0; lVertIndex < lPolySize; ++lVertIndex )
-        {
-            //if (lPolyIndexCounter < lIndexCount)
-            {
-                FbxVector2 lUVValue;
-                
-                //the UV index depends on the reference mode
-                
-                int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(lPolyIndexCounter) : lPolyIndexCounter;
-                
-                lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
-                
-                resultUV.push_back(vec2(static_cast<float>(lUVValue[0]), static_cast<float>(lUVValue[1])));
-                
-                lPolyIndexCounter++;
-            }
-        }
-    }
-    
-    return resultUVs;
-}*/
 
 const std::vector<glm::vec2>& FbxLoader::getUVsForKeyWithSetName(const std::string &key, const std::string &UVSetName) {
     if (readyUVs.empty()) {
@@ -479,15 +388,18 @@ std::vector<glm::vec3> FbxLoader::extractTangentsOf(fbxsdk_2015_1::FbxMesh *mesh
     FbxGeometryElementTangent *tangentElement = mesh->GetElementTangent();
     std::vector<glm::vec3> result;
     
+    bool tangentDataGenerated = false;
     if (not tangentElement) {
-        mesh->GenerateTangentsDataForAllUVSets();
+        tangentDataGenerated = mesh->GenerateTangentsDataForAllUVSets();
     }
     
-    if (not tangentElement) {
+    if (not tangentDataGenerated) {
         result = computeTangentBasis(readyVertices.at(mesh->GetName()),
                                      readyUVs.at(mesh->GetName()).at(UVSetNames.at(mesh->GetName()).at(0)), // for first uv set only
                                      readyNormals.at(mesh->GetName()));
     } else {
+        tangentElement = mesh->GetElementTangent();
+        
         int numTangents = mesh->GetPolygonCount();
         int vertexCounter = 0;
         result.reserve(numTangents * kNumberOfPointsInVertex);
@@ -518,7 +430,7 @@ const std::vector<glm::vec3>& FbxLoader::getTangentsForKey(const std::string &ke
 }
 
 void FbxLoader::forceLoadProcessingTangents() {
-    if (readyTangents.empty())
+    if (!readyTangents.empty())
         throw std::runtime_error("forceLoadProcessingTangents: readyTangents are not empty, no need to load");
     
     std::for_each(keys.begin(),
@@ -530,43 +442,6 @@ void FbxLoader::forceLoadProcessingTangents() {
 
 
 #pragma mark - Utility
-
-/*void FbxLoader::loadIndexedVertices() {
-    if (_indexedVertices.empty()) {
-        _indexedVertices.reserve(_indices.size());
-        for (int i = 0; i < _indices.size(); ++i) {
-            _indexedVertices.push_back(_vertices[_indices[i]]);
-        }
-    }
-}
-
-
-void FbxLoader::extractTangentsOf(fbxsdk_2015_1::FbxMesh *mesh) {
-    
-    FbxGeometryElementTangent *tangentElement = mesh->GetElementTangent();
-
-    if (tangentElement) {
-        _tangents.clear();
-        
-        int numTangents = mesh->GetPolygonCount();
-        int vertexCounter = 0;
-        _tangents.reserve(numTangents * kNumberOfPointsInVertex);
-        for (int polyCounter = 0; polyCounter < numTangents; ++polyCounter) {
-            int polygonSize = mesh->GetPolygonSize(polyCounter);
-            if (polygonSize > kPolygonSize)
-                throw std::runtime_error("Cannot extract tangents, a size of polygon != " + kNumberOfPointsInVertex);
-            
-            for (int i = 0; i < polygonSize; ++i) {
-                FbxVector4 fbxTangent = tangentElement->GetDirectArray().GetAt(vertexCounter);
-                vec3 tangent(fbxTangent[0], fbxTangent[1], fbxTangent[2]);
-                _tangents.push_back(std::move(tangent));
-                
-                vertexCounter++;
-            }
-        }
-        
-    }
-}*/
 
 std::vector<glm::vec3> FbxLoader::computeTangentBasis(const std::vector<glm::vec3>& verticesIn,
                                                       const std::vector<glm::vec2>& uvsIn,
@@ -630,3 +505,145 @@ std::vector<glm::vec3> FbxLoader::computeTangentBasis(const std::vector<glm::vec
     return tangentsOut;
 }
 
+/*std::unordered_map<std::string, std::vector<glm::vec2>> result;
+ 
+ FbxStringList lUVSetNameList;
+ mesh->GetUVSetNames(lUVSetNameList);
+ 
+ for(int lUVSetIndex = 0; lUVSetIndex < lUVSetNameList.GetCount(); ++lUVSetIndex) {
+ 
+ std::string key = lUVSetNameList.GetStringAt(lUVSetIndex);
+ std::vector<glm::vec2> UVs;
+ 
+ FbxGeometryElementUV* lUVElement = mesh->GetElementUV(lUVSetName);
+ 
+ if(!lUVElement)
+ continue;
+ 
+ if(lUVElement->GetMappingMode() != FbxGeometryElement::eByPolygonVertex &&
+ lUVElement->GetMappingMode() != FbxGeometryElement::eByControlPoint) {
+ throw std::runtime_error("FBXLoader - UV extracting: unsupported mapping mode");
+ }
+ 
+ if (lUVElement->GetMappingMode() == FbxGeometryElement::eByControlPoint) {
+ UVs = extractUVsByControlPoints(mesh, key);
+ } else if (lUVElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex) {
+ UVs = extractUVsByPolygonVertex(mesh, key);
+ }
+ result.insert({std::move(key), std::move(UVs)});
+ }
+ 
+ return result;
+}*/
+
+// RVO
+/*std::vector<glm::vec2> FbxLoader::extractUVsByControlPoints(fbxsdk_2015_1::FbxMesh *mesh, const std::string& setName) {
+ FbxGeometryElement *geometryElement = mesh->GetElementUV(lUVSet)
+ 
+ if (geometryElement->GetMappingMode() != FbxGeometryElement::eByControlPoint)
+ throw std::runtime_error("extractUVsByControlPoints: wrong mapping mode");
+ 
+ FbxGeometryElementUV *lUVElement = mesh->GetElementUV(setName.c_str());
+ 
+ std::vector<glm::vec2> resultUVs;
+ 
+ const int lPolyCount = mesh->GetPolygonCount();
+ //iterating through the data by polygon
+ for( int lPolyIndex = 0; lPolyIndex < lPolyCount; ++lPolyIndex )
+ {
+ // build the max index array that we need to pass into MakePoly
+ const int lPolySize = mesh->GetPolygonSize(lPolyIndex);
+ for( int lVertIndex = 0; lVertIndex < lPolySize; ++lVertIndex )
+ {
+ FbxVector2 lUVValue;
+ 
+ //get the index of the current vertex in control points array
+ int lPolyVertIndex = mesh->GetPolygonVertex(lPolyIndex, lVertIndex);
+ 
+ //the UV index depends on the reference mode
+ int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(lPolyVertIndex) : lPolyVertIndex;
+ 
+ lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
+ 
+ resultUVs.push_back(vec2(static_cast<float>(lUVValue[0]), static_cast<float>(lUVValue[1])));
+ 
+ }
+ }
+ 
+ return resultUVs;
+ }
+ 
+ // RVO
+ std::vector<glm::vec2> FbxLoader::extractUVsByPolygonVertex(fbxsdk_2015_1::FbxMesh *mesh, const std::string& setName) {
+ if (geometryElement->GetMappingMode() != FbxGeometryElement::eByPolygonVertex)
+ throw std::runtime_error("extractUVsByPolygonVertex: wrong mapping mode");
+ 
+ FbxGeometryElementUV *lUVElement = mesh->GetElementUV(setName.c_str());
+ 
+ std::vector<glm::vec2> resultUVs;
+ 
+ int lPolyIndexCounter = 0;
+ 
+ for( int lPolyIndex = 0; lPolyIndex < mesh->GetPolygonCount(); ++lPolyIndex )
+ {
+ // build the max index array that we need to pass into MakePoly
+ const int lPolySize = mesh->GetPolygonSize(lPolyIndex);
+ 
+ for( int lVertIndex = 0; lVertIndex < lPolySize; ++lVertIndex )
+ {
+ //if (lPolyIndexCounter < lIndexCount)
+ {
+ FbxVector2 lUVValue;
+ 
+ //the UV index depends on the reference mode
+ 
+ int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(lPolyIndexCounter) : lPolyIndexCounter;
+ 
+ lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
+ 
+ resultUV.push_back(vec2(static_cast<float>(lUVValue[0]), static_cast<float>(lUVValue[1])));
+ 
+ lPolyIndexCounter++;
+ }
+ }
+ }
+ 
+ return resultUVs;
+ }*/
+
+/*void FbxLoader::loadIndexedVertices() {
+ if (_indexedVertices.empty()) {
+ _indexedVertices.reserve(_indices.size());
+ for (int i = 0; i < _indices.size(); ++i) {
+ _indexedVertices.push_back(_vertices[_indices[i]]);
+ }
+ }
+ }
+ 
+ 
+ void FbxLoader::extractTangentsOf(fbxsdk_2015_1::FbxMesh *mesh) {
+ 
+ FbxGeometryElementTangent *tangentElement = mesh->GetElementTangent();
+ 
+ if (tangentElement) {
+ _tangents.clear();
+ 
+ int numTangents = mesh->GetPolygonCount();
+ int vertexCounter = 0;
+ _tangents.reserve(numTangents * kNumberOfPointsInVertex);
+ for (int polyCounter = 0; polyCounter < numTangents; ++polyCounter) {
+ int polygonSize = mesh->GetPolygonSize(polyCounter);
+ if (polygonSize > kPolygonSize)
+ throw std::runtime_error("Cannot extract tangents, a size of polygon != " + kNumberOfPointsInVertex);
+ 
+ for (int i = 0; i < polygonSize; ++i) {
+ FbxVector4 fbxTangent = tangentElement->GetDirectArray().GetAt(vertexCounter);
+ vec3 tangent(fbxTangent[0], fbxTangent[1], fbxTangent[2]);
+ _tangents.push_back(std::move(tangent));
+ 
+ vertexCounter++;
+ }
+ }
+ 
+ }
+ }*/
