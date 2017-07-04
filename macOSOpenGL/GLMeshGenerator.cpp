@@ -79,6 +79,12 @@ std::vector<GLMesh *> GLMeshGenerator::createMeshUsing(const std::string& key) {
     resultMeshes.at(0)->getMaterial()->addTexture(diffuse);
     resultMeshes.at(0)->getMaterial()->addTexture(normalMap);
     
+    GLTexture *furDiff = new GLTexture([[mainBundle pathForResource:@"ttcogl/fur_diff" ofType:@"png"] UTF8String], GLTextureType::Diffuse);
+    GLTexture *furNormal = new GLTexture([[mainBundle pathForResource:@"ttcogl/fur_norm" ofType:@"png"] UTF8String], GLTextureType::NormalMap);
+    
+    resultMeshes.at(1)->getMaterial()->addTexture(furDiff);
+    resultMeshes.at(1)->getMaterial()->addTexture(furNormal);
+    
     return resultMeshes;
 }
 

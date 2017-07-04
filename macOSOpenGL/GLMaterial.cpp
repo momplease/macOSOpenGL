@@ -64,19 +64,8 @@ void GLMaterial::clearOpenGL() {
 }
 
 void GLMaterial::bind(GLShaderProgram *shaderProgram) {
-    GLint diffuseTextureLocation = shaderProgram->getFragmentShader()->getUniformLocationByName(kDiffuseTextureInShaderName);
-    glUniform1i(diffuseTextureLocation, 0);
     
-    GLint normalMapTextureLocation = shaderProgram->getFragmentShader()->getUniformLocationByName(kNormalMapTextureInShaderName);
-    glUniform1i(normalMapTextureLocation, 1);
-    
-    
-                glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, textures[0]->getGLId());
-    
-                glActiveTexture(GL_TEXTURE1);
-                glBindTexture(GL_TEXTURE_2D, textures[1]->getGLId());
-    
+    bindTextures(shaderProgram);
     
     glBindBuffer(GL_ARRAY_BUFFER, UVBufferObject);
     glEnableVertexAttribArray(shaderProgram->getVertexShader()->getAttributeLocationByName(kUVInShaderName));
@@ -109,6 +98,24 @@ void GLMaterial::bind(GLShaderProgram *shaderProgram) {
 
 void GLMaterial::unbind(GLShaderProgram *shaderProgram) {
     // TODO
+}
+
+void GLMaterial::bindTextures(GLShaderProgram *shaderProgram) {
+    if (textures.empty())
+        return;
+    
+    GLint diffuseTextureLocation = shaderProgram->getFragmentShader()->getUniformLocationByName(kDiffuseTextureInShaderName);
+    glUniform1i(diffuseTextureLocation, 0);
+    
+    GLint normalMapTextureLocation = shaderProgram->getFragmentShader()->getUniformLocationByName(kNormalMapTextureInShaderName);
+    glUniform1i(normalMapTextureLocation, 1);
+    
+    
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textures[0]->getGLId());
+    
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, textures[1]->getGLId());
 }
 
 const std::vector<std::unique_ptr<GLTexture>>& GLMaterial::getTextures() const {

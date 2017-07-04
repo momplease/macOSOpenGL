@@ -38,7 +38,6 @@ void main(){
     
     vec3 materialDiffuseColor = (texture2D(uniDiffuseTexture, vec2(varUV.x, 1.0 - varUV.y))).xyz;
     vec3 materialAmbientColor = vec3(0.1, 0.1, 0.1) * materialDiffuseColor;
-    vec3 materialSpecularColor = vec3(0.3, 0.3, 0.3);
     
     float dist = length(varLightPosition_worldSpace - varPosition_worldSpace);
     
@@ -47,7 +46,10 @@ void main(){
     vec3 vvvv = varEyeDirection_cameraSpace;
     vec3 vvvvv = varLightDirection_cameraSpace;
     
-    vec3 textureNormal_tangentSpace = normalize(texture2D(uniNormalMap, vec2(varUV.x, 1.0 - varUV.y)).rgb * 2.0 - 1.0);
+    vec4 normalColor = texture2D(uniNormalMap, vec2(varUV.x, 1.0 - varUV.y));
+    
+    vec3 textureNormal_tangentSpace = normalize(normalColor.rgb * 2.0 - 1.0);
+    vec3 materialSpecularColor = vec3(normalColor.a, normalColor.a, normalColor.a);
     
     //vec3 n = varNormal_cameraSpace;
     vec3 n = textureNormal_tangentSpace;
@@ -69,7 +71,8 @@ void main(){
                         materialSpecularColor * lightColor * lightPower * pow(cosAlpha, 32.0) / (dist), diff.a);
     
     vec3 t = tangent;
-    //gl_FragColor = vec4(tangent, 1.0);
+    //gl_FragColor = vec4(materialSpecularColor, 1.0);
+    //gl_FragColor = vec4(materialSpecularColor, 1.0);
     //vec4(vec2(varUV.x, 1.0 - varUV.y), 0.0, 1.0);
     //gl_FragColor = vec4(diff.xyz, min( diff.a+(1.0-step( 1.0, diff.a )), 1.0));
     //gl_FragColor = vec4(textureNormal_tangentSpace, 1.0);

@@ -21,10 +21,20 @@ public:
     Transform& operator=(const Transform&) = delete;
     Transform(Transform&&) = delete;
     Transform& operator=(Transform&&) = delete;
-    
+public:
     glm::vec3 getPosition();
     glm::quat getRotation();
     glm::vec3 getScale();
+    
+    void setPosition(glm::vec3);
+    
+    void translateBy(glm::vec3);
+    
+    void rotateBy(glm::quat);
+    void rotateBy(float angle, glm::vec3 axis);
+    
+    void scaleBy(float);
+    void scaleBy(glm::vec3);
     
     glm::mat4 asMatrix();
     
@@ -33,7 +43,7 @@ public:
                              glm::quat(0.0f, 0.0f, 0.0f, 0.0f),
                              glm::vec3(1.0f, 1.0f, 1.0f));
     }
-
+    
 private:
     glm::vec3 position;
     glm::quat rotation;

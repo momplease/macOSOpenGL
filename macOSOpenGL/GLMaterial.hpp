@@ -54,6 +54,8 @@ public:
     GLMaterialConfig* getConfig();
     
 protected:
+    void bindTextures(GLShaderProgram *shaderProgram);
+    
     std::vector<glm::vec2> UVs;
     std::vector<glm::vec3> normals;
     std::vector<glm::vec3> tangents;

@@ -59,10 +59,6 @@ public:
     virtual void bind(GLShaderProgram *) override {}
     virtual void unbind(GLShaderProgram *) override {}
     
-    //void setRenderOrderUsingComparator(std::vector<glm::vec3>&,
-    //                                   std::vector<glm::vec2>&,
-    //                                   function<bool(macOSOpenGL::SortPolygon, macOSOpenGL::SortPolygon)>);
-    
     static glm::vec3 getCenter() {
         return glm::vec3(0.0, 0.0, 0.0);
     }
