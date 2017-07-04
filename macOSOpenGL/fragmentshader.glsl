@@ -12,7 +12,6 @@ varying vec3 varLightDirection_tangentSpace;
 varying vec3 varEyeDirection_tangentSpace;
 
 varying vec3 tangent;
-varying vec3 bitangent;
 
 //out vec4 fragColor;
 //uniform float uniPowerOfLight;
@@ -70,8 +69,7 @@ void main(){
                         materialSpecularColor * lightColor * lightPower * pow(cosAlpha, 32.0) / (dist), diff.a);
     
     vec3 t = tangent;
-    vec3 bi = bitangent;
-    gl_FragColor = vec4(tangent, 1.0);
+    //gl_FragColor = vec4(tangent, 1.0);
     //vec4(vec2(varUV.x, 1.0 - varUV.y), 0.0, 1.0);
     //gl_FragColor = vec4(diff.xyz, min( diff.a+(1.0-step( 1.0, diff.a )), 1.0));
     //gl_FragColor = vec4(textureNormal_tangentSpace, 1.0);

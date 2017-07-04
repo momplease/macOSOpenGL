@@ -75,7 +75,6 @@
 /* Begin PBXFileReference section */
 		8201527C1E8E713200EF5B0D /* macOSOpenGLWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macOSOpenGLWindowController.h; sourceTree = "<group>"; };
 		8201527D1E8E713200EF5B0D /* macOSOpenGLWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = macOSOpenGLWindowController.m; sourceTree = "<group>"; };
-		820C9CBA1EA3B64F00F84367 /* IVertexed.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IVertexed.h; sourceTree = "<group>"; };
 		8210861C1E8ECBD400943F67 /* OpenGLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLViewController.h; sourceTree = "<group>"; };
 		8210861D1E8ECBD400943F67 /* OpenGLViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenGLViewController.mm; sourceTree = "<group>"; };
 		821086251E8ED66A00943F67 /* GLScene.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = GLScene.cpp; sourceTree = "<group>"; };
@@ -103,7 +102,6 @@
 		8215D0761E9BA5C400E01997 /* ISceneBehaviour.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ISceneBehaviour.hpp; sourceTree = "<group>"; };
 		8215D10E1EA2292700E01997 /* GLObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLObject.cpp; sourceTree = "<group>"; };
 		8215D10F1EA2292700E01997 /* GLObject.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GLObject.hpp; sourceTree = "<group>"; };
-		8215D1111EA22A3300E01997 /* IGLDrawable.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IGLDrawable.h; sourceTree = "<group>"; };
 		8215D1141EA2371000E01997 /* GL3DObject.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GL3DObject.hpp; sourceTree = "<group>"; };
 		8215D1191EA23BC000E01997 /* Transform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Transform.cpp; sourceTree = "<group>"; };
 		8215D11A1EA23BC000E01997 /* Transform.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Transform.hpp; sourceTree = "<group>"; };
@@ -113,7 +111,6 @@
 		8227514D1F03D6DD0092BE7B /* GLMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GLMesh.hpp; sourceTree = "<group>"; };
 		8227514F1F03D8370092BE7B /* GLGrid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLGrid.cpp; sourceTree = "<group>"; };
 		822751501F03D8370092BE7B /* GLGrid.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GLGrid.hpp; sourceTree = "<group>"; };
-		823B7BDE1EA3B31E00C3A304 /* ITextured.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = ITextured.h; sourceTree = "<group>"; };
 		823C210B1E83242300596F60 /* macOSOpenGL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = macOSOpenGL.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		823C210E1E83242300596F60 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		823C210F1E83242300596F60 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -157,7 +154,6 @@
 		82B229D71EFAC5B000F8324F /* GLMeshGenerator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GLMeshGenerator.hpp; sourceTree = "<group>"; };
 		82CB4E301EE2CB03007AFC35 /* GLContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLContext.cpp; sourceTree = "<group>"; };
 		82CB4E311EE2CB03007AFC35 /* GLContext.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GLContext.hpp; sourceTree = "<group>"; };
-		82CB4E481EE333E5007AFC35 /* IGLRenderable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGLRenderable.h; sourceTree = "<group>"; };
 		82CE670D1ED5D81D00D7F5DF /* GL3DObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GL3DObject.cpp; sourceTree = "<group>"; };
 		82CE68081EDED95900D7F5DF /* Property.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Property.cpp; sourceTree = "<group>"; };
 		82CE68091EDED95900D7F5DF /* Property.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Property.hpp; sourceTree = "<group>"; };
@@ -211,9 +207,9 @@
 			children = (
 				82410EE41EEDB98400161BB4 /* Rendering */,
 				828944AC1E86CFF70086838B /* Loaders */,
-				828944821E8479CA0086838B /* Shaders */,
 				82CF61821EEC215200C17CA6 /* Light */,
 				8215D0621E9B82BB00E01997 /* Camera */,
+				828944821E8479CA0086838B /* Shaders */,
 				8210862C1E8FCA7E00943F67 /* Abstract */,
 				828944AD1E86D00A0086838B /* GLObject */,
 				82CE68711EE1B0B600D7F5DF /* Components */,
@@ -241,10 +237,6 @@
 				8210862A1E8FCA3300943F67 /* IRenderingEngine.hpp */,
 				821086291E8FCA3300943F67 /* IRenderingEngine.cpp */,
 				821086301E8FCFB000943F67 /* RenderingEngineDelegate.mm */,
-				8215D1111EA22A3300E01997 /* IGLDrawable.h */,
-				823B7BDE1EA3B31E00C3A304 /* ITextured.h */,
-				820C9CBA1EA3B64F00F84367 /* IVertexed.h */,
-				82CB4E481EE333E5007AFC35 /* IGLRenderable.h */,
 			);
 			name = Abstract;
 			sourceTree = "<group>";
@@ -383,16 +375,6 @@
 		82410EE31EEDB88300161BB4 /* Concept */ = {
 			isa = PBXGroup;
 			children = (
-				82B229D61EFAC5B000F8324F /* GLMeshGenerator.cpp */,
-				82B229D71EFAC5B000F8324F /* GLMeshGenerator.hpp */,
-				8227514C1F03D6DD0092BE7B /* GLMesh.cpp */,
-				8227514D1F03D6DD0092BE7B /* GLMesh.hpp */,
-				8227514F1F03D8370092BE7B /* GLGrid.cpp */,
-				822751501F03D8370092BE7B /* GLGrid.hpp */,
-				82CF61891EECAC5000C17CA6 /* GLMaterial.cpp */,
-				82CF618A1EECAC5000C17CA6 /* GLMaterial.hpp */,
-				825C6C361EFD4A9C009A30CA /* GLTexture.cpp */,
-				825C6C371EFD4A9C009A30CA /* GLTexture.hpp */,
 				824CC4DA1ECC418E008E9530 /* Polygon.hpp */,
 				824CC4D91ECC418E008E9530 /* Polygon.cpp */,
 				825C6C4A1EFE4964009A30CA /* ThreadPool.cpp */,
@@ -493,6 +475,16 @@
 			children = (
 				8215D11A1EA23BC000E01997 /* Transform.hpp */,
 				8215D1191EA23BC000E01997 /* Transform.cpp */,
+				82B229D61EFAC5B000F8324F /* GLMeshGenerator.cpp */,
+				82B229D71EFAC5B000F8324F /* GLMeshGenerator.hpp */,
+				8227514C1F03D6DD0092BE7B /* GLMesh.cpp */,
+				8227514D1F03D6DD0092BE7B /* GLMesh.hpp */,
+				8227514F1F03D8370092BE7B /* GLGrid.cpp */,
+				822751501F03D8370092BE7B /* GLGrid.hpp */,
+				82CF61891EECAC5000C17CA6 /* GLMaterial.cpp */,
+				82CF618A1EECAC5000C17CA6 /* GLMaterial.hpp */,
+				825C6C361EFD4A9C009A30CA /* GLTexture.cpp */,
+				825C6C371EFD4A9C009A30CA /* GLTexture.hpp */,
 			);
 			name = Components;
 			sourceTree = "<group>";

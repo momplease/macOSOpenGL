@@ -16,9 +16,10 @@ GLTexture::GLTexture(const std::string& path, GLTextureType aType) : path(path),
 
 
 void GLTexture::prepareOpenGL() {
-    if (glId == NAN) {
+    if (not ready) {
         OpenGLTextureLoader *loader = [[OpenGLTextureLoader alloc] init];
         glId = [loader loadTexture2D:[NSString stringWithUTF8String:path.c_str()]];
+        ready = true;
     }
 }
 

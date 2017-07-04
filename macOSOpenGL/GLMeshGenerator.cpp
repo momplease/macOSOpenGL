@@ -15,6 +15,7 @@
 #include "GLGrid.hpp"
 #include "GLMaterial.hpp"
 #include "Transform.hpp"
+#include "GLTexture.hpp"
 
 #include "glm/gtc/matrix_transform.hpp"
 
@@ -69,6 +70,14 @@ std::vector<GLMesh *> GLMeshGenerator::createMeshUsing(const std::string& key) {
         GLMesh *mesh = new GLMesh(grid, material, transform);
         resultMeshes.push_back(mesh);
     }
+
+    // TODO: remove
+    NSBundle *mainBundle = [NSBundle mainBundle];
+    GLTexture *diffuse = new GLTexture([[mainBundle pathForResource:@"ttcogl/body_diff" ofType:@"png"] UTF8String], GLTextureType::Diffuse);
+    GLTexture *normalMap = new GLTexture([[mainBundle pathForResource:@"ttcogl/body_norm" ofType:@"png"] UTF8String], GLTextureType::NormalMap);
+    
+    resultMeshes.at(0)->getMaterial()->addTexture(diffuse);
+    resultMeshes.at(0)->getMaterial()->addTexture(normalMap);
     
     return resultMeshes;
 }

@@ -34,6 +34,7 @@ public:
     const std::string& getPathWhereLocated() const;
     GLuint getGLId() const;
     GLTextureType getType() const;
+    bool isReady() const;
     
     virtual void prepareOpenGL() override;
     virtual void clearOpenGL() override;
@@ -42,7 +43,8 @@ public:
     virtual void unbind(GLShaderProgram *) override;
     
 private:
-    GLuint glId = NAN;
+    GLuint glId;
+    bool ready = false;
     std::string path;
     GLTextureType aType = GLTextureType::Undefined;
     

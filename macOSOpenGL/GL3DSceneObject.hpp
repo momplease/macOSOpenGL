@@ -43,7 +43,7 @@ public:
     
     virtual void clearOpenGL() override {}
     
-    virtual void bind(GLShaderProgram *) override {}
+    virtual void bind(GLShaderProgram *) override;
     virtual void unbind(GLShaderProgram *) override {}
     
 protected:

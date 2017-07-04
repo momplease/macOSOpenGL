@@ -2,7 +2,6 @@ attribute vec3 vertexPosition_modelSpace;
 attribute vec2 UV;
 attribute vec3 vertexNormal_modelSpace;
 attribute vec3 vertexTangent_modelSpace;
-attribute vec3 vertexBinormal_modelSpace;
 //attribute vec3 normal;
 //#version 330 core
 //layout(location = 0) in vec3 vertexPosition;
@@ -65,7 +64,6 @@ void main() {
     varEyeDirection_tangentSpace = TBN * eyeDirection_cameraSpace;
     
     tangent = normalize(vertexTangent_modelSpace);
-    bitangent = normalize(cross(vertexNormal_modelSpace, vertexTangent_modelSpace)); //???
     
     //varNormal_cameraSpace = (uniViewMatrix * uniModelMatrix * vec4(vertexNormal_modelSpace, 1.0)).xyz;
 }

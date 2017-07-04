@@ -35,3 +35,23 @@ void GLMesh::setConfig(GLMeshConfig config) {
 GLMeshConfig* GLMesh::getConfig() {
     return &config;
 }
+
+void GLMesh::prepareOpenGL() {
+    grid->prepareOpenGL();
+    material->prepareOpenGL();
+}
+
+void GLMesh::clearOpenGL() {
+    grid->clearOpenGL();
+    material->clearOpenGL();
+}
+
+void GLMesh::bind(GLShaderProgram *shaderProgram) {
+    grid->bind(shaderProgram);
+    material->bind(shaderProgram);
+}
+
+void GLMesh::unbind(GLShaderProgram *shaderProgram) {
+    grid->unbind(shaderProgram);
+    material->unbind(shaderProgram);
+}

@@ -24,6 +24,7 @@ struct GLMaterialConfig {
     GLenum UVCoordsType = GL_FLOAT;
     GLboolean UVCoordsNormilized = GL_FALSE;
     GLsizei UVCoordsStride = 0;
+    GLint normalsOffset = 3;
 };
 
 class GLMaterial : public GLObject {
@@ -59,6 +60,11 @@ protected:
     
     std::vector<std::unique_ptr<GLTexture>> textures;
     GLMaterialConfig config;
+    
+    GLuint UVBufferObject = NAN;
+    GLuint normalBufferObject = NAN;
+    GLuint tangentBufferObject = NAN;
+    
 };
 
 #endif /* GLMaterial_hpp */

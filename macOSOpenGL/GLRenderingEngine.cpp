@@ -24,6 +24,7 @@
 #include "GLFragmentShader.hpp"
 
 #include "GLMesh.hpp"
+#include "GLGrid.hpp"
 #include "Transform.hpp"
 
 #define thisDelegate ((__bridge  OpenGLViewController *)delegate)
@@ -70,8 +71,8 @@ void GLRenderingEngine::prepareOpenGL() {
     
     glEnable(GL_BLEND);
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE);
     
     glClearColor(0, 0, 0.4f, 0);
     
@@ -81,8 +82,8 @@ void GLRenderingEngine::prepareOpenGL() {
     glBindVertexArrayAPPLE(vao);
     
     
-    this->scene->prepareOpenGL();
     this->prepareShaders();
+    this->scene->prepareOpenGL();
 
     
     
@@ -161,22 +162,22 @@ void GLRenderingEngine::render(GLMesh *mesh, glm::mat4 parentsModel) {
 
 
 void GLRenderingEngine::draw(GLMesh *mesh) {
-    /*if (mesh->isUsingDepthBuffer())
+    if (mesh->getConfig()->useDepthBuffer)
         glEnable(GL_DEPTH_TEST);
     else
         glDisable(GL_DEPTH_TEST);
     
-    if (mesh->isUsingIndices()) {
-        GLContext::mainContext()->bindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->getIndicesBufferObject());
-        GLContext::mainContext()->drawElements(mesh->getGrid()->getTopology(),
+    if (mesh->getGrid()->isUsingIndices()) {
+        GLContext::mainContext()->bindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->getGrid()->getIBO());
+        GLContext::mainContext()->drawElements(mesh->getGrid()->getConfig()->topology,
                                                mesh->getGrid()->getIndicesCount(),
                                                mesh->getGrid()->getIndicesType(),
                                                (void*)0);
     } else {
-        GLContext::mainContext()->drawArrays(mesh->getGrid()->getTopology(),
-                                             mesh->getGrid()->getOffset(),
+        GLContext::mainContext()->drawArrays(mesh->getGrid()->getConfig()->topology,
+                                             0,
                                              mesh->getGrid()->getVerticesCount());
-    }*/
+    }
 }
 
 
@@ -194,6 +195,7 @@ void GLRenderingEngine::prepareShaders() {
     GLVertexShader *vertexShader = new GLVertexShader([[mainBundle pathForResource:@"vertexshader"
                                                                             ofType:@"glsl"] UTF8String],
                                                       shaderProgram.get());
+    
     GLFragmentShader *fragmentShader = new GLFragmentShader([[mainBundle pathForResource:@"fragmentshader"
                                                                                   ofType:@"glsl"] UTF8String],
                                                             shaderProgram.get());

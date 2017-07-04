@@ -129,6 +129,7 @@ void GLScene::prepareOpenGL() {
         
         loadSceneObjectsWith(std::move(generatedMeshes));
         
+        delete generator;
         
         /*std::for_each(generator->getMeshes().begin(),
                       generator->getMeshes().end(),

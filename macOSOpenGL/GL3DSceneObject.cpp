@@ -21,6 +21,9 @@ GL3DSceneObject::GL3DSceneObject(const std::vector<GLMesh*>& meshes, Transform *
     }
 }
 
+GL3DSceneObject::~GL3DSceneObject() {
+}
+
 void GL3DSceneObject::prepareOpenGL() {
     auto rawPointersToMeshes = getMeshes();
     std::for_each(rawPointersToMeshes.begin(),
@@ -68,7 +71,13 @@ int GL3DSceneObject::getMeshesCount() const {
     return static_cast<int>(meshes.size());
 }
 
-GL3DSceneObject::~GL3DSceneObject() {
+void GL3DSceneObject::bind(GLShaderProgram *shaderProgram) {
+    auto meshes = getMeshes();
+    std::for_each(meshes.begin(),
+                  meshes.end(),
+                  [this, shaderProgram](GLMesh *mesh){
+                      mesh->bind(shaderProgram);
+                  });
 }
 
 //void GL3DSceneObject::updateAnimations(double deltaTime) {
