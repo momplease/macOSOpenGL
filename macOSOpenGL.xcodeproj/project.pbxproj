@@ -39,7 +39,6 @@
 		828944861E847A0B0086838B /* fragmentshader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 828944851E847A0B0086838B /* fragmentshader.glsl */; };
 		828944891E847FB80086838B /* ArrayDeleter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 828944871E847FB80086838B /* ArrayDeleter.cpp */; };
 		828944A41E859ABC0086838B /* glm in Resources */ = {isa = PBXBuildFile; fileRef = 828944A31E859ABC0086838B /* glm */; };
-		828944A71E86B0C30086838B /* GLCube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 828944A51E86B0C30086838B /* GLCube.cpp */; };
 		828944B01E86DED90086838B /* OpenGLTextureLoader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 828944AF1E86DED90086838B /* OpenGLTextureLoader.mm */; };
 		82B229D81EFAC5B000F8324F /* GLMeshGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82B229D61EFAC5B000F8324F /* GLMeshGenerator.cpp */; };
 		82CB4E321EE2CB03007AFC35 /* GLContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82CB4E301EE2CB03007AFC35 /* GLContext.cpp */; };
@@ -52,7 +51,6 @@
 		82CF61921EECB2AF00C17CA6 /* GLFragmentShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82CF61901EECB2AF00C17CA6 /* GLFragmentShader.cpp */; };
 		82CF61951EECB5D900C17CA6 /* GLVertexShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82CF61931EECB5D900C17CA6 /* GLVertexShader.cpp */; };
 		82FF79D01E887A4D00F6C806 /* GLCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82FF79CE1E887A4D00F6C806 /* GLCamera.cpp */; };
-		82FF79D31E887C9500F6C806 /* GLTexturedCube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82FF79D11E887C9500F6C806 /* GLTexturedCube.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -146,8 +144,6 @@
 		828944871E847FB80086838B /* ArrayDeleter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArrayDeleter.cpp; sourceTree = "<group>"; };
 		828944881E847FB80086838B /* ArrayDeleter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ArrayDeleter.hpp; sourceTree = "<group>"; };
 		828944A31E859ABC0086838B /* glm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = glm; sourceTree = "<group>"; };
-		828944A51E86B0C30086838B /* GLCube.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLCube.cpp; sourceTree = "<group>"; };
-		828944A61E86B0C30086838B /* GLCube.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GLCube.hpp; sourceTree = "<group>"; };
 		828944AE1E86DED90086838B /* OpenGLTextureLoader.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = OpenGLTextureLoader.hpp; sourceTree = "<group>"; };
 		828944AF1E86DED90086838B /* OpenGLTextureLoader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenGLTextureLoader.mm; sourceTree = "<group>"; };
 		82B229D61EFAC5B000F8324F /* GLMeshGenerator.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = GLMeshGenerator.cpp; sourceTree = "<group>"; };
@@ -171,8 +167,6 @@
 		82CF61941EECB5D900C17CA6 /* GLVertexShader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GLVertexShader.hpp; sourceTree = "<group>"; };
 		82FF79CE1E887A4D00F6C806 /* GLCamera.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = GLCamera.cpp; sourceTree = "<group>"; };
 		82FF79CF1E887A4D00F6C806 /* GLCamera.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = GLCamera.hpp; sourceTree = "<group>"; };
-		82FF79D11E887C9500F6C806 /* GLTexturedCube.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLTexturedCube.cpp; sourceTree = "<group>"; };
-		82FF79D21E887C9500F6C806 /* GLTexturedCube.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GLTexturedCube.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -266,17 +260,6 @@
 				8215D0631E9B82D600E01997 /* CameraController.cpp */,
 			);
 			name = Camera;
-			sourceTree = "<group>";
-		};
-		8215D1121EA236EA00E01997 /* Deprecated */ = {
-			isa = PBXGroup;
-			children = (
-				828944A61E86B0C30086838B /* GLCube.hpp */,
-				828944A51E86B0C30086838B /* GLCube.cpp */,
-				82FF79D21E887C9500F6C806 /* GLTexturedCube.hpp */,
-				82FF79D11E887C9500F6C806 /* GLTexturedCube.cpp */,
-			);
-			name = Deprecated;
 			sourceTree = "<group>";
 		};
 		823C21021E83242300596F60 = {
@@ -457,7 +440,6 @@
 				82CE670D1ED5D81D00D7F5DF /* GL3DObject.cpp */,
 				8215D1321EA254A300E01997 /* GL3DSceneObject.hpp */,
 				8215D1311EA254A300E01997 /* GL3DSceneObject.cpp */,
-				8215D1121EA236EA00E01997 /* Deprecated */,
 			);
 			name = GLObject;
 			sourceTree = "<group>";
@@ -652,7 +634,6 @@
 				8210861E1E8ECBD400943F67 /* OpenGLViewController.mm in Sources */,
 				821086331E8FF6CE00943F67 /* GLRenderingEngine.cpp in Sources */,
 				82CF61881EEC22F800C17CA6 /* GLPointLight.cpp in Sources */,
-				82FF79D31E887C9500F6C806 /* GLTexturedCube.cpp in Sources */,
 				82B229D81EFAC5B000F8324F /* GLMeshGenerator.cpp in Sources */,
 				82CF618B1EECAC5000C17CA6 /* GLMaterial.cpp in Sources */,
 				8227514E1F03D6DD0092BE7B /* GLMesh.cpp in Sources */,
@@ -663,7 +644,6 @@
 				8210862B1E8FCA3300943F67 /* IRenderingEngine.cpp in Sources */,
 				828944891E847FB80086838B /* ArrayDeleter.cpp in Sources */,
 				8215D0651E9B82D600E01997 /* CameraController.cpp in Sources */,
-				828944A71E86B0C30086838B /* GLCube.cpp in Sources */,
 				822751511F03D8370092BE7B /* GLGrid.cpp in Sources */,
 				82CF61951EECB5D900C17CA6 /* GLVertexShader.cpp in Sources */,
 				82CE670E1ED5D81D00D7F5DF /* GL3DObject.cpp in Sources */,

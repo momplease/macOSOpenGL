@@ -14,7 +14,6 @@
 #include "OpenGLViewController.h"
 
 #include "GL3DSceneObject.hpp"
-#include "IGLDrawable.h"
 
 #include "GLContext.hpp"
 #include "GLPointLight.hpp"
